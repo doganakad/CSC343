@@ -1,0 +1,61 @@
+Script started on Thu Dec  8 07:46:26 2016
+b3195-04:~/Downloads% ssh k[Kakado[Kdoga2[K@dbsrv1.d[Kcdf.utoronto.ca
+
+    Type "faq" to view FAQ, and "rules" to view usage policy.
+    Report system problems by sending email to <admin@teach.cs.toronto.edu>.
+
+The Teaching Labs are: BA2200 BA2210 BA2220 BA2240 BA2270 BA3175 BA3185 BA3195 BA3200
+
+This is a shared Linux system. By using this system, you acknowledge that
+some information about your computer account (e.g. login name, process data,
+etc.) will be available to other users sharing this system, in ways 
+typical of shared Linux systems.  
+Last login: Thu Dec  8 07:42:31 2016 from b3195-04.teach.cs.toronto.edu
+
+dbsrv1:~% cd Downloads
+
+dbsrv1:~/Downloads% psql csc343h-akaddoga
+
+psql (9.3.15)
+Type "help" for help.
+
+csc343h-akaddoga=> \i closets.ddl 
+psql:closets.ddl:1: NOTICE:  drop cascades to 12 other objects
+DETAIL:  drop cascades to table closetclosetclosets.customers
+drop cascades to table closetclosetclosets.products
+drop cascades to table closetclosetclosets.orders
+drop cascades to table closetclosetclosets.parts
+drop cascades to table closetclosetclosets.workcenters
+drop cascades to table closetclosetclosets.invoices
+drop cascades to table closetclosetclosets.orderform
+drop cascades to table closetclosetclosets.invoicebill
+drop cascades to table closetclosetclosets.bom
+drop cascades to table closetclosetclosets.productorder
+drop cascades to table closetclosetclosets.routing
+drop cascades to table closetclosetclosets.cusform
+DROP SCHEMA
+CREATE SCHEMA
+SET
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+csc343h-akaddoga=> \q
+dbsrv1:~/Downloads% e[Kexit
+
+logout
+Connection to dbsrv1.cdf.utoronto.ca closed.
+
+b3195-04:~/Downloads% exit
+
+exit
+
+Script done on Thu Dec  8 07:46:57 2016

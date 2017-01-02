@@ -1,0 +1,129 @@
+DROP SCHEMA if exists ClosetClosetClosets cascade;
+CREATE SCHEMA ClosetClosetClosets;
+SET search_path to ClosetClosetClosets, public;
+
+CREATE TABLE Customers (
+	cusId integer PRIMARY KEY,
+	cusName varchar(25) UNIQUE,
+	cusAddr varchar(100) UNIQUE,
+	phoneNum varchar(15),
+	outBalance real default 0,
+	discPercent real,
+	creditLimit real,
+	totalPurchase real default 0
+);
+
+CREATE TABLE Products (
+	proId integer PRIMARY KEY,
+	proName varchar(25) NOT NULL,
+	code integer NOT NULL,
+	price real UNIQUE,
+	description varchar(100) UNIQUE
+);
+
+CREATE TABLE Orders (
+	orderNumber integer PRIMARY KEY,
+	orderDate date NOT NULL,
+	cusNum integer NOT NULL,
+	billAddr varchar(100) NOT NULL,
+	desQuantity integer UNIQUE,
+	productId integer REFERENCES Products(proId),
+	FOREIGN KEY (cusNum) REFERENCES Customers(cusId),
+	FOREIGN KEY (billAddr) REFERENCES Customers(cusAddr)
+);
+
+CREATE TABLE Parts (
+	partNo integer PRIMARY KEY,
+	descript varchar(150) UNIQUE,
+	partCode integer UNIQUE,
+	location varchar(100) UNIQUE
+);
+
+CREATE TABLE WorkCenters (
+	centerName varchar(25) UNIQUE,
+	centerLoc varchar(100) NOT NULL,
+	capacity integer,
+	PRIMARY KEY (centerName, centerLoc)
+);
+
+CREATE TABLE Invoices (
+	invoiceNum integer PRIMARY KEY,
+	orderNumber integer REFERENCES Orders(orderNumber),
+	invoiceDate date UNIQUE,
+	cusId integer NOT NULL,
+	address varchar(100) NOT NULL,
+	FOREIGN KEY (cusId) REFERENCES Customers(cusId),
+	FOREIGN KEY (address) REFERENCES Customers(cusAddr)
+);
+
+CREATE TABLE OrderForm (
+	cusNumber integer NOT NULL,
+	billAddr varchar(100) NOT NULL,
+	orderDate date NOT NULL,
+	PRIMARY KEY (cusNumber, orderDate),
+	FOREIGN KEY (cusNumber) REFERENCES Customers(cusId),
+	FOREIGN KEY (billAddr) REFERENCES Customers(cusAddr)
+);
+
+CREATE TABLE InvoiceBill (
+	productNumber integer REFERENCES Products(proId),
+	description varchar(50),
+	unitPrice real NOT NULL,
+	orderQuantity integer,
+	orderNumber integer,
+	cusNumber integer,
+	invoiceDate date REFERENCES Invoices(invoiceDate),
+	PRIMARY KEY (cusNumber, invoiceDate),
+	FOREIGN KEY (cusNumber) REFERENCES Customers(cusId),
+	FOREIGN KEY (orderNumber) REFERENCES Orders(orderNumber),
+	FOREIGN KEY (orderQuantity) REFERENCES Orders(desQuantity),
+	FOREIGN KEY (description) REFERENCES Products(description),
+	FOREIGN KEY (unitPrice) REFERENCES Products(price)
+);
+
+CREATE TABLE BOM (
+	productNum integer NOT NULL,
+	proDescription varchar(25) NOT NULL,
+	partNum integer NOT NULL,
+	partDescript varchar(150) NOT NULL,
+	quantity integer NOT NULL default 1,
+	location varchar(100) NOT NULL,
+	code integer NOT NULL,
+	PRIMARY KEY (productNum, partNum),
+	FOREIGN KEY (productNum) REFERENCES Products(proId),
+	FOREIGN KEY (proDescription) REFERENCES Products(description),
+	FOREIGN KEY (partNum) REFERENCES Parts(partNo),
+	FOREIGN KEY (partDescript) REFERENCES Parts(descript),
+	FOREIGN KEY (location) REFERENCES Parts(location),
+	FOREIGN KEY (code) REFERENCES Parts(partCode)
+);
+
+CREATE TABLE ProductOrder (
+	proNum integer REFERENCES Products(proId),
+	workCenter varchar(25) NOT NULL,
+	jobNumber integer PRIMARY KEY,
+	quantity integer NOT NULL,
+	estCompDate date
+);
+
+CREATE TABLE Routing (
+	productNum integer NOT NULL,
+	proDescription varchar(25) NOT NULL,
+	workCenter varchar(25) REFERENCES WorkCenters(centerName),
+	opNo integer NOT NULL,
+	opDescript varchar(25) NOT NULL,
+	setTime time NOT NULL,
+	opTime time,
+	PRIMARY KEY (productNum, opNo),
+	FOREIGN KEY (productNum) REFERENCES Products(proId),
+	FOREIGN KEY (proDescription) REFERENCES Products(description),
+	FOREIGN KEY (workCenter) REFERENCES WorkCenters(centerName)
+);
+
+CREATE TABLE CusForm (
+	cusNumber integer REFERENCES Customers(cusId),
+	cusName varchar(25) NOT NULL,
+	cusAddr varchar(100) NOT NULL,
+	FOREIGN KEY (cusName) REFERENCES Customers(cusName),
+	FOREIGN KEY (cusAddr) REFERENCES Customers(cusAddr)
+);
